@@ -1,7 +1,7 @@
 <?php
 /**
- * Plugin Name: Demo Plugin
- * Description: A simple demo plugin for WordPress.
+ * Plugin Name: WordPress 6.9 Demo
+ * Description: A simple demo plugin for WordPress 6.9 features.
  * Version: 1.0.0
  */
 
@@ -10,8 +10,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-add_action( 'admin_enqueue_scripts', 'demo_admin_enqueue_scripts' );
-function demo_admin_enqueue_scripts() {
+add_action( 'admin_enqueue_scripts', 'wp69_demo_admin_enqueue_scripts' );
+function wp69_demo_admin_enqueue_scripts() {
 	wp_enqueue_script(
 		'demo-admin-script',
 		plugins_url( 'src/index.js', __FILE__ ),
@@ -21,8 +21,8 @@ function demo_admin_enqueue_scripts() {
 	);
 }
 
-add_action( 'init', 'demo_init' );
-function demo_init() {
+add_action( 'init', 'wp69_demo_init' );
+function wp69_demo_init() {
 	$labels = array(
 		'name'          => 'Books',
 		'singular_name' => 'Book',
