@@ -19,6 +19,24 @@ function wp69_demo_admin_enqueue_scripts() {
 		'1.0.0',
 		true
 	);
+
+    $page_slugs = array(
+        'pages' => array(
+            'introduction',
+            'wordpress-6-9'
+        ),
+        'books' => array(
+            'meditations'
+        )
+    );
+
+    wp_localize_script(
+        'demo-admin-script',
+        'wpDemoData',
+        array(
+            'pageSlugs' => $page_slugs
+        )
+    );
 }
 
 add_action( 'init', 'wp69_demo_init' );

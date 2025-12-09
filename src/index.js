@@ -1,5 +1,6 @@
 (function (wp) {
     console.log('Demo plugin loaded');
+    console.log(wpDemoData);
 
     wp.data.dispatch(wp.commands.store).registerCommand({
         name: 'demo/introductions',
