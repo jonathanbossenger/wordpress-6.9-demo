@@ -1,0 +1,11 @@
+{
+    "name": "jonathan/demo",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Jonathan Bossenger",
+            "email": "jonathanbossenger@gmail.com"
+        }
+    ],
+    "require": {}
+}
