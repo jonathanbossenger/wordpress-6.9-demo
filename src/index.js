@@ -1,39 +1,49 @@
 (function (wp) {
+
+    const apiFetch = wp.apiFetch;
+
     console.log('Demo plugin loaded');
     console.log(wpDemoData);
 
     wp.data.dispatch(wp.commands.store).registerCommand({
-        name: 'demo/introductions',
-        label: 'Show Introductions',
+        name: 'demo/intro',
+        label: 'Show Intro Post',
         callback: ({close}) => {
-            document.location.href = 'site-editor.php?p=%2Fpage&postId=22&canvas=edit';
+            document.location.href = 'post.php?post=1&action=edit';
             close();
         },
     });
 
     wp.data.dispatch(wp.commands.store).registerCommand({
-        name: 'demo/wordpress69',
-        label: 'WordPress 6.9',
+        name: 'demo/meditations',
+        label: 'Meditations',
         callback: ({close}) => {
-            document.location.href = 'site-editor.php?p=%2Fpage&postId=17&canvas=edit';
+            document.location.href = 'post.php?post=6&action=edit';
             close();
         },
     });
 
-    wp.data.dispatch(wp.commands.store).registerCommand({
-        name: 'demo/go-to-book',
-        label: 'Go to my book',
-        callback: ({close}) => {
-            document.location.href = 'post.php?post=14&action=edit';
-            close();
-        },
-    });
     wp.data.dispatch(wp.commands.store).registerCommand({
         name: 'demo/go-to-index-template',
         label: 'Edit Index Template',
         callback: ({close}) => {
-            document.location.href = 'post.php?post=14&action=edit';
+            document.location.href = 'site-editor.php?p=%2Fwp_template%2Ftwentytwentyfive%2F%2Findex&canvas=edit';
             close();
         },
     });
+
+    wp.data.dispatch(wp.commands.store).registerCommand({
+        name: 'demo/reset-book',
+        label: 'Reset book',
+        callback: ({close}) => {
+            apiFetch( {
+                path: '/wp-abilities/v1/abilities/wp69-demo/reset-book/run',
+                method: 'POST',
+            } ).then( ( response ) => {
+                document.location.reload();
+                close();
+            } );
+        },
+    });
+
 })(wp);

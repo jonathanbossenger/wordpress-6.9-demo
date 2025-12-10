@@ -1,5 +1,6 @@
 {
-    "name": "jonathan/demo",
+    "name": "jonathan/wordpress-6.9-demo",
+    "description": "A demo plugin for WordPress 6.9 features.",
     "license": "GPL-2.0-or-later",
     "authors": [
         {
@@ -7,5 +8,12 @@
             "email": "jonathanbossenger@gmail.com"
         }
     ],
-    "require": {}
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "require-dev": {
+        "wp-coding-standards/wpcs": "^3.0"
+    }
 }
