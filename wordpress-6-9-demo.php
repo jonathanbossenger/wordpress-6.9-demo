@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Fetches the book with the slug meditations
+ * Fetches a post based on the provided slug and post type.
  *
  * @param string $slug The post slug (required).
  * @param string $post_type The post type (optional).
@@ -41,7 +41,17 @@ function wp69_demo_book_content() {
 	return file_get_contents( plugin_dir_path( __FILE__ ) . 'content/book.html' );
 }
 
+/**
+ * Function used to return clean post content
+ *
+ * @return string The new post content.
+ */
+function wp69_demo_post_content(){
+	return file_get_contents( plugin_dir_path( __FILE__ ) . 'content/post.html' );
+}
+
 register_activation_hook( __FILE__, 'wp69_demo_enable_custom_fields' );
+register_activation_hook( __FILE__, 'wp69_demo_update_initial_post' );
 /**
  * Enable custom fields for the current user upon plugin activation.
  */
@@ -53,6 +63,19 @@ function wp69_demo_enable_custom_fields() {
 	flush_rewrite_rules();
 }
 
+/**
+ * Update the initial post with new content upon plugin activation.
+ */
+function wp69_demo_update_initial_post(){
+	$updated_post = array(
+		'ID'           => 1,
+		'post_title'   => 'Hello Gene.',
+		'post_name'    => 'hello-gene',
+		'post_status' => 'publish',
+		'post_content' => wp69_demo_post_content(),
+	);
+	wp_update_post( $updated_post );
+}
 
 register_deactivation_hook( __FILE__, 'wp69_demo_disable_custom_fields' );
 /**
@@ -162,23 +185,51 @@ function wp69_demo_admin_enqueue_scripts() {
 		'1.0.0',
 		true
 	);
+}
 
-	$page_slugs = array(
-		'posts' => array(
-			'hello-gene',
-		),
-		'books' => array(
-			'meditations',
-		),
-	);
-
-	wp_localize_script(
-		'demo-admin-script',
-		'wpDemoData',
+add_action( 'wp_abilities_api_init', 'wp69_demo_create_book_ability' );
+/**
+ * Reset book ability
+ *
+ * @return void
+ */
+function wp69_demo_create_book_ability() {
+	wp_register_ability(
+		'wp69-demo/create-book',
 		array(
-			'pageSlugs' => $page_slugs,
+			'label'               => __( 'Create book', 'wp69-demo' ),
+			'description'         => __( 'Creates an initial book.', 'wp69-demo' ),
+			'category'            => 'site',
+			'output_schema'       => array(
+				'type'        => 'string',
+				'description' => 'Status message.',
+			),
+			'execute_callback'    => 'wp_69_demo_create_book_callback',
+			'permission_callback' => function () {
+				return current_user_can( 'manage_options' );
+			},
+			'meta'                => array(
+				'show_in_rest' => true,
+			),
 		)
 	);
+}
+
+/**
+ * Create book ability callback
+ *
+ * @return string
+ */
+function wp_69_demo_create_book_callback() {
+	$new_book = array(
+		'post_title'   => 'Meditations',
+		'post_name'    => 'meditations',
+		'post_content' => wp69_demo_book_content(),
+		'post_status'  => 'publish',
+		'post_type'    => 'book',
+	);
+	wp_insert_post( $new_book );
+	return 'Created new book.';
 }
 
 add_action( 'wp_abilities_api_init', 'wp69_demo_reset_book_ability' );
@@ -192,11 +243,11 @@ function wp69_demo_reset_book_ability() {
 		'wp69-demo/reset-book',
 		array(
 			'label'               => __( 'Reset book content', 'wp69-demo' ),
-			'description'         => __( 'Retrieves the title of the current WordPress site.', 'wp69-demo' ),
+			'description'         => __( 'Resets the book content back to it\'s original state.', 'wp69-demo' ),
 			'category'            => 'site',
 			'output_schema'       => array(
 				'type'        => 'string',
-				'description' => 'Update message.',
+				'description' => 'Status message.',
 			),
 			'execute_callback'    => 'wp_69_demo_reset_book_callback',
 			'permission_callback' => function () {
@@ -217,13 +268,14 @@ function wp69_demo_reset_book_ability() {
 function wp_69_demo_reset_book_callback() {
 	$book = wp69_demo_get_post( 'meditations', 'book' );
 	if ( ! $book ) {
-		return 'Error fetching book';
+		return 'Error fetching the book.';
 	}
 	$updated_book = array(
-		'ID'           => $book->ID,
-		'post_title'   => 'Meditations.',
+		'post_title'   => 'Meditations',
+		'post_name'    => 'meditations',
 		'post_content' => wp69_demo_book_content(),
+		'post_status'  => 'publish'
 	);
 	wp_update_post( $updated_book );
-	return 'Updated book.';
+	return 'Updated the book content.';
 }

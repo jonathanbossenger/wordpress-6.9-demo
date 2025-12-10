@@ -3,7 +3,6 @@
     const apiFetch = wp.apiFetch;
 
     console.log('Demo plugin loaded');
-    console.log(wpDemoData);
 
     wp.data.dispatch(wp.commands.store).registerCommand({
         name: 'demo/intro',
@@ -33,6 +32,21 @@
     });
 
     wp.data.dispatch(wp.commands.store).registerCommand({
+        name: 'demo/create-book',
+        label: 'Create book',
+        callback: ({close}) => {
+            apiFetch( {
+                path: '/wp-abilities/v1/abilities/wp69-demo/create-book/run',
+                method: 'POST',
+            } ).then( ( response ) => {
+                alert( response );
+                document.location.reload();
+                close();
+            } );
+        },
+    });
+
+    wp.data.dispatch(wp.commands.store).registerCommand({
         name: 'demo/reset-book',
         label: 'Reset book',
         callback: ({close}) => {
@@ -40,6 +54,7 @@
                 path: '/wp-abilities/v1/abilities/wp69-demo/reset-book/run',
                 method: 'POST',
             } ).then( ( response ) => {
+                alert( response );
                 document.location.reload();
                 close();
             } );
