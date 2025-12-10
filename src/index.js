@@ -14,10 +14,19 @@
     });
 
     wp.data.dispatch(wp.commands.store).registerCommand({
+        name: 'demo/credits',
+        label: 'Show Credits Page',
+        callback: ({close}) => {
+            document.location.href = 'credits.php';
+            close();
+        },
+    });
+
+    wp.data.dispatch(wp.commands.store).registerCommand({
         name: 'demo/meditations',
         label: 'Meditations',
         callback: ({close}) => {
-            document.location.href = 'post.php?post=6&action=edit';
+            document.location.href = 'post.php?post=8&action=edit';
             close();
         },
     });

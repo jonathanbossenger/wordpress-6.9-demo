@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function wp69_demo_get_post( $slug, $post_type = 'post' ) {
 	$args  = array(
-		'name'           => $slug,
+		'post_name'      => $slug,
 		'post_type'      => $post_type,
 		'posts_per_page' => 1,
 		'post_status'    => 'publish',
@@ -271,8 +271,8 @@ function wp_69_demo_reset_book_callback() {
 		return 'Error fetching the book.';
 	}
 	$updated_book = array(
+		'ID'           => $book->ID,
 		'post_title'   => 'Meditations',
-		'post_name'    => 'meditations',
 		'post_content' => wp69_demo_book_content(),
 		'post_status'  => 'publish'
 	);
