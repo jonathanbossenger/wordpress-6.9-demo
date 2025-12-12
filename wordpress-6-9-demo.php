@@ -138,6 +138,7 @@ function wp69_demo_init() {
 		'rest_base'    => 'books',
 		'supports'     => array(
 			'title',
+            'author',
 			'editor',
 			'thumbnail',
 			'excerpt',
@@ -228,7 +229,10 @@ function wp_69_demo_create_book_callback() {
 		'post_status'  => 'publish',
 		'post_type'    => 'book',
 	);
-	wp_insert_post( $new_book );
+	$post_id = wp_insert_post( $new_book );
+    update_post_meta( $post_id, 'isbn', '9876543210' );
+    update_post_meta( $post_id, 'author', 'Marcus Aurelius' );
+    update_post_meta( $book->ID, 'quality', 'Good' );
 	return 'Created new book.';
 }
 
@@ -277,5 +281,8 @@ function wp_69_demo_reset_book_callback() {
 		'post_status'  => 'publish'
 	);
 	wp_update_post( $updated_book );
+    update_post_meta( $book->ID, 'isbn', '9876543210' );
+    update_post_meta( $book->ID, 'author', 'Marcus Aurelius' );
+    update_post_meta( $book->ID, 'quality', 'Good' );
 	return 'Updated the book content.';
 }

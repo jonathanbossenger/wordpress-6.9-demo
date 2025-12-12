@@ -1,5 +1,6 @@
 (function (wp) {
 
+    const registerBlockBindingsSource = wp.blocks.registerBlockBindingsSource
     const apiFetch = wp.apiFetch;
 
     console.log('Demo plugin loaded');
@@ -32,10 +33,10 @@
     });
 
     wp.data.dispatch(wp.commands.store).registerCommand({
-        name: 'demo/go-to-index-template',
-        label: 'Edit Index Template',
+        name: 'demo/go-to-book-template',
+        label: 'Edit Book Template',
         callback: ({close}) => {
-            document.location.href = 'site-editor.php?p=%2Fwp_template%2Ftwentytwentyfive%2F%2Findex&canvas=edit';
+            document.location.href = 'site-editor.php?p=%2Fwp_template%2Ftwentytwentyfive%2F%2Fsingle-book&canvas=edit';
             close();
         },
     });
@@ -69,5 +70,61 @@
             } );
         },
     });
+
+    registerBlockBindingsSource({
+        name: 'demo/locations',
+        label: 'Locations',
+        useContext: [ 'postId', 'postType' ],
+        getValues: ( { bindings } ) => {
+            // this getValues assumes you're on a paragraph
+            if ( bindings.address?.args?.value === 'hq' ) {
+                return {
+                    address:
+                        '125 Main Road, Cape Town.',
+                };
+            }
+            if ( bindings.address?.args?.value === 'south' ) {
+                return {
+                    address:
+                        '45 2nd Ave, Kenilworth.',
+                };
+            }
+            if ( bindings.address?.args?.value === 'north' ) {
+                return {
+                    address:
+                        "87 Queen Street, Durbanville.",
+                };
+            }
+            return {
+                address: bindings.address,
+            };
+        },
+
+        getFieldsList() {
+            return [
+                {
+                    label: 'Headquarters',
+                    type: 'string',
+                    args: {
+                        value: 'hq',
+                    },
+                },
+                {
+                    label: 'South Branch',
+                    type: 'string',
+                    args: {
+                        value: 'south',
+                    },
+                },
+                {
+                    label: 'North Branch',
+                    type: 'string',
+                    args: {
+                        value: 'north',
+                    },
+                },
+            ];
+        },
+    } );
 
 })(wp);
