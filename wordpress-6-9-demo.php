@@ -12,6 +12,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
+	require_once __DIR__ . '/vendor/autoload.php';
+}
+
+add_action( 'plugins_loaded', 'wp69_demo_register_mcp_adapter' );
+/**
+ * Undocumented function
+ *
+ * @return void
+ */
+function wp69_demo_register_mcp_adapter() {
+	if ( ! class_exists( WP\MCP\Core\McpAdapter::class ) ) {
+		// Check if the MCP Adapter class is available, if not show some sort of error or admin notice.
+		return;
+	}
+
+	// Initialize MCP Adapter and its default server.
+	WP\MCP\Core\McpAdapter::instance();
+}
+
 /**
  * Fetches a post based on the provided slug and post type.
  *
@@ -46,7 +66,7 @@ function wp69_demo_book_content() {
  *
  * @return string The new post content.
  */
-function wp69_demo_post_content(){
+function wp69_demo_post_content() {
 	return file_get_contents( plugin_dir_path( __FILE__ ) . 'content/post.html' );
 }
 
@@ -66,12 +86,12 @@ function wp69_demo_enable_custom_fields() {
 /**
  * Update the initial post with new content upon plugin activation.
  */
-function wp69_demo_update_initial_post(){
+function wp69_demo_update_initial_post() {
 	$updated_post = array(
 		'ID'           => 1,
 		'post_title'   => 'Hello Gene.',
 		'post_name'    => 'hello-gene',
-		'post_status' => 'publish',
+		'post_status'  => 'publish',
 		'post_content' => wp69_demo_post_content(),
 	);
 	wp_update_post( $updated_post );
@@ -138,7 +158,7 @@ function wp69_demo_init() {
 		'rest_base'    => 'books',
 		'supports'     => array(
 			'title',
-            'author',
+			'author',
 			'editor',
 			'thumbnail',
 			'excerpt',
@@ -229,10 +249,10 @@ function wp_69_demo_create_book_callback() {
 		'post_status'  => 'publish',
 		'post_type'    => 'book',
 	);
-	$post_id = wp_insert_post( $new_book );
-    update_post_meta( $post_id, 'isbn', '9876543210' );
-    update_post_meta( $post_id, 'author', 'Marcus Aurelius' );
-    update_post_meta( $book->ID, 'quality', 'Good' );
+	$post_id  = wp_insert_post( $new_book );
+	update_post_meta( $post_id, 'isbn', '9876543210' );
+	update_post_meta( $post_id, 'author', 'Marcus Aurelius' );
+	update_post_meta( $book->ID, 'quality', 'Good' );
 	return 'Created new book.';
 }
 
@@ -278,11 +298,11 @@ function wp_69_demo_reset_book_callback() {
 		'ID'           => $book->ID,
 		'post_title'   => 'Meditations',
 		'post_content' => wp69_demo_book_content(),
-		'post_status'  => 'publish'
+		'post_status'  => 'publish',
 	);
 	wp_update_post( $updated_book );
-    update_post_meta( $book->ID, 'isbn', '9876543210' );
-    update_post_meta( $book->ID, 'author', 'Marcus Aurelius' );
-    update_post_meta( $book->ID, 'quality', 'Good' );
+	update_post_meta( $book->ID, 'isbn', '9876543210' );
+	update_post_meta( $book->ID, 'author', 'Marcus Aurelius' );
+	update_post_meta( $book->ID, 'quality', 'Good' );
 	return 'Updated the book content.';
 }

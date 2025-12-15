@@ -8,7 +8,7 @@
 
         <!-- wp:group {"className":"has-link-color","style":{"spacing":{"blockGap":"0.2em","margin":{"bottom":"var:preset|spacing|60"}}},"textColor":"accent-4","fontSize":"small","layout":{"type":"flex","flexWrap":"wrap"}} -->
         <div class="wp-block-group has-link-color has-accent-4-color has-text-color has-small-font-size" style="margin-bottom:var(--wp--preset--spacing--60)"><!-- wp:paragraph -->
-            <p>Written by </p>
+            <p>Added by by </p>
             <!-- /wp:paragraph -->
 
             <!-- wp:post-author-name {"isLink":true} /-->
@@ -25,7 +25,7 @@
             <p>Author:</p>
             <!-- /wp:paragraph -->
 
-            <!-- wp:paragraph -->
+            <!-- wp:paragraph {"metadata":{"bindings":{"content":{"source":"core/post-meta","args":{"key":"author"}}}}} -->
             <p></p>
             <!-- /wp:paragraph --></div>
         <!-- /wp:group -->
@@ -35,7 +35,7 @@
             <p>ISBN:</p>
             <!-- /wp:paragraph -->
 
-            <!-- wp:paragraph -->
+            <!-- wp:paragraph {"metadata":{"bindings":{"content":{"source":"core/post-meta","args":{"key":"isbn"}}}}} -->
             <p></p>
             <!-- /wp:paragraph --></div>
         <!-- /wp:group -->

@@ -15,5 +15,8 @@
     },
     "require-dev": {
         "wp-coding-standards/wpcs": "^3.0"
+    },
+    "require": {
+        "wordpress/mcp-adapter": "^0.4.1"
     }
 }

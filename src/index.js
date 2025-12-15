@@ -1,9 +1,9 @@
 (function (wp) {
 
+    console.log('Demo plugin code loaded');
+
     const registerBlockBindingsSource = wp.blocks.registerBlockBindingsSource
     const apiFetch = wp.apiFetch;
-
-    console.log('Demo plugin loaded');
 
     wp.data.dispatch(wp.commands.store).registerCommand({
         name: 'demo/intro',
