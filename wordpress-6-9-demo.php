@@ -252,7 +252,7 @@ function wp_69_demo_create_book_callback() {
 	$post_id  = wp_insert_post( $new_book );
 	update_post_meta( $post_id, 'isbn', '9876543210' );
 	update_post_meta( $post_id, 'author', 'Marcus Aurelius' );
-	update_post_meta( $book->ID, 'quality', 'Good' );
+	update_post_meta( $post_id, 'quality', 'Good' );
 	return 'Created new book.';
 }
 
@@ -279,6 +279,10 @@ function wp69_demo_reset_book_ability() {
 			},
 			'meta'                => array(
 				'show_in_rest' => true,
+				'mcp'          => array(
+					'public' => true,   // Required for MCP access.
+					'type'   => 'tool', // Optional: 'tool' (default), 'resource', or 'prompt'.
+				),
 			),
 		)
 	);
