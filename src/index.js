@@ -1,7 +1,5 @@
 (function (wp) {
 
-    console.log('Demo plugin code loaded');
-
     const registerBlockBindingsSource = wp.blocks.registerBlockBindingsSource
     const apiFetch = wp.apiFetch;
 
@@ -38,21 +36,6 @@
         callback: ({close}) => {
             document.location.href = 'site-editor.php?p=%2Fwp_template%2Ftwentytwentyfive%2F%2Fsingle-book&canvas=edit';
             close();
-        },
-    });
-
-    wp.data.dispatch(wp.commands.store).registerCommand({
-        name: 'demo/create-book',
-        label: 'Create book',
-        callback: ({close}) => {
-            apiFetch( {
-                path: '/wp-abilities/v1/abilities/wp69-demo/create-book/run',
-                method: 'POST',
-            } ).then( ( response ) => {
-                alert( response );
-                document.location.reload();
-                close();
-            } );
         },
     });
 
